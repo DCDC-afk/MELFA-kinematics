@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "melfa-kinematics"
+version = "0.1.0"
+description = "Transformaciones homogéneas SE(3) y visualización 3D de tramas para el robot Mitsubishi MELFA de 6 GDL."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    { name = "Daniel Cartagena" },
+    { name = "Julian Zambrano" },
+    { name = "Edwin Vela" },
+]
+dependencies = [
+    "numpy==2.5.3",
+    "matplotlib==3.11.2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest==9.1.1",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = [".", "src"]
+testpaths = ["tests"]
+addopts = "-p no:cacheprovider"
