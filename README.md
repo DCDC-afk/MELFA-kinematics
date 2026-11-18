@@ -235,8 +235,7 @@ Todos los cambios fueron inspeccionados mediante `git diff` y validados con `pyt
 * `docs/auditoria_inicial.md`
 * `docs/informe_final.md`
 
-## 12. Autores
+## 12. Autor
 
-* **Daniel Cartagena** (`DCDC-afk`)
-* **Julian Zambrano**
-* **Edwin Vela**
+* **Daniel Cartagena** 
+
