@@ -1,14 +1,53 @@
-"""Utilidades de visualización para marcos de referencia 3D."""
+"""Utilidades de visualización para marcos de referencia 3D en SE(3)."""
+
+from typing import Any, Optional, Sequence, Union
 
 import matplotlib.pyplot as plt
 import numpy as np
 
 
-def plot_frames_3d(T_list, axis_length=0.1, link_tol=1e-12, ax=None, show=True, title=None):
-    """
-    Dibuja tramas 3D a partir de una lista/array (N,4,4) de matrices homogéneas (SE(3)).
-    - Eje X (rojo), Y (verde), Z (azul) con etiquetas Xi, Yi, Zi en la punta.
-    - Segmentos negros entre orígenes consecutivos (eslabones) si hay traslación.
+def plot_frames_3d(
+    T_list: Union[np.ndarray, Sequence[np.ndarray]],
+    axis_length: float = 0.1,
+    link_tol: float = 1e-12,
+    ax: Optional[Any] = None,
+    show: bool = True,
+    title: Optional[str] = None,
+) -> Any:
+    """Dibuja tramas 3D a partir de una lista o arreglo (N, 4, 4) de matrices homogéneas SE(3).
+
+    Características visuales:
+    - Eje X (rojo), Y (verde), Z (azul) con etiquetas Xi, Yi, Zi en la punta de cada eje.
+    - Segmentos negros entre orígenes consecutivos (eslabones) cuando la distancia supera `link_tol`.
+    - Ajuste automático de límites espaciales con proporción cúbica (1:1:1).
+
+    Parámetros
+    ----------
+    T_list : array_like de forma (N, 4, 4)
+        Secuencia o arreglo NumPy con N matrices de transformación homogénea 4x4.
+    axis_length : float, opcional
+        Longitud visual de las flechas de los ejes coordenados locales (por defecto 0.1).
+    link_tol : float, opcional
+        Distancia mínima entre orígenes consecutivos para trazar un segmento de eslabón (por defecto 1e-12).
+    ax : Axes3D, opcional
+        Ejes 3D de Matplotlib existentes donde dibujar. Si es `None`, se crea una nueva figura.
+    show : bool, opcional
+        Si es `True` y se creó una figura nueva, invoca `plt.show()` (por defecto `True`).
+    title : str, opcional
+        Título opcional para el gráfico 3D.
+
+    Retorna
+    -------
+    Axes3D
+        Objeto de ejes 3D de Matplotlib con las tramas y eslabones representados.
+
+    Ejemplo
+    -------
+    >>> import numpy as np
+    >>> from melfa_kinematics.transforms import Rz, Trans
+    >>> from melfa_kinematics.plotting import plot_frames_3d
+    >>> frames = np.stack([np.eye(4), Trans(0, 0, 0.15) @ Rz(np.pi / 4)], axis=0)
+    >>> ax = plot_frames_3d(frames, axis_length=0.05, show=False, title="Ejemplo")
     """
     T_arr = np.asarray(T_list)
     if T_arr.ndim != 3 or T_arr.shape[1:] != (4, 4):
